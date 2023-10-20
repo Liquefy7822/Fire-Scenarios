@@ -1,23 +1,24 @@
 import Head from 'next/head'
 import Header from '@components/Header'
 import Footer from '@components/Footer'
+import { useEffect, useState } from "react";
 
-export default function Home() {
+const Home = () => {
+  const [aiResponse, setAIResponse] = useState("");
+
+  useEffect(() => {
+    fetch("/api/generate-scenario") // Use the correct API route
+      .then((response) => response.json())
+      .then((data) => setAIResponse(data.data))
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
-    <div className="container">
-      <Head>
-        <title>Next.js Starter!</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <Header title="Welcome to my app!" />
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
-      </main>
-
-      <Footer />
+    <div>
+      <h1>Fire Safety Scenario:</h1>
+      <p>{aiResponse}</p>
     </div>
-  )
-}
+  );
+};
+
+export default Home;
